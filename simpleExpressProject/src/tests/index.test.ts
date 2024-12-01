@@ -28,6 +28,56 @@ import  request  from 'supertest';
       expect(res.body.answer).toBe(0);
     })
 
+
+    it("code should not be running ", async ()=> {
+      const res = await request(app).post("/multiple").send({
+        a: 100000000,
+        b: 0
+      })
+      expect(res.statusCode).toBe(422);
+      expect(res.body.error).toBe("Number exceeds the limit of 100,000");
+
+    })
+
+
+  })
+
+  describe("post /multiple", () => { 
+    it("shoudl return the multiplication of two numbers", async () => {
+      const res = await request(app).post("/multiple").send({
+        a: 2,
+        b: 3
+      })
+      expect(res.statusCode).toBe(200);
+      expect(res.body.answer).toBe(6);
+    })
+    it("shoudl return the multiplication of negative numbers", async () => {
+      const res = await request(app).post("/multiple").send({
+        a: -2,
+        b: -3
+      })
+      expect(res.statusCode).toBe(200);
+      expect(res.body.answer).toBe(6);
+    })
+
+    it("should send multiple zeros to multiple responses", async () => {
+      const res = await request(app).post("/multiple").send({
+        a: 0,
+        b: 0
+      })
+      expect(res.statusCode).toBe(200);
+      expect(res.body.answer).toBe(0);
+    })
+
+    it("code should not be running ", async ()=> {
+      const res = await request(app).post("/multiple").send({
+        a: 100000000,
+        b: 0
+      })
+      expect(res.statusCode).toBe(422);
+      expect(res.body.error).toBe("Number exceeds the limit of 100,000");
+
+    })
   })
 
 // describe("POST /sum", () => {
